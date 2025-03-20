@@ -8,7 +8,7 @@
  */
 
 import { test } from '@japa/runner'
-import vine from '../../../index.js'
+import vine, { errors } from '../../../index.js'
 import dayjs from 'dayjs'
 
 test.group('VineDate', () => {
@@ -209,7 +209,7 @@ test.group('VineDate', () => {
     //Same datetimes should throw validation error
     const data = { start_date: '2018-04-04T16:00:00.000Z', end_date: '2018-04-04T16:00:00.000Z' }
 
-    await assert.rejects(() => vine.validate({ schema, data }))
+    await assert.rejects(() => vine.validate({ schema, data }), errors.E_VALIDATION_ERROR)
   })
 
   test('ISO 8601 respects beforeField validation', async ({ assert }) => {
@@ -221,6 +221,6 @@ test.group('VineDate', () => {
     //Same datetimes should throw validation error
     const data = { start_date: '2018-04-04T16:00:00.000Z', end_date: '2018-04-04T16:00:00.000Z' }
 
-    await assert.rejects(() => vine.validate({ schema, data }))
+    await assert.rejects(() => vine.validate({ schema, data }), errors.E_VALIDATION_ERROR)
   })
 })
