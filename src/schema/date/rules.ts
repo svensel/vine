@@ -435,7 +435,15 @@ export const afterFieldRule = createRule<
 
   const compare = options.compare || 'day'
   const dateTime = field.meta.$value as Dayjs
-  const format = options.format || field.meta.$formats
+  let format = options.format || field.meta.$formats
+
+  //Notice that iso8601 is listed as a format which is not a string dayjs recognizes
+  console.log('ORIG FORMAT', format)
+
+  if (format.includes('iso8601')) {
+    format = ['YYYY-MM-DD', 'YYYY-MM-DD[T]HH:mm:ss[Z]', 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]', ...format]
+  }
+
   const expectedValue = helpers.getNestedValue(options.otherField, field)
   const expectedDateTime = dayjs(expectedValue, format, true)
 
@@ -519,7 +527,15 @@ export const beforeFieldRule = createRule<
 
   const compare = options.compare || 'day'
   const dateTime = field.meta.$value as Dayjs
-  const format = options.format || field.meta.$formats
+  let format = options.format || field.meta.$formats
+
+  //Notice that iso8601 is listed as a format which is not a string dayjs recognizes
+  console.log('ORIG FORMAT', format)
+
+  if (format.includes('iso8601')) {
+    format = ['YYYY-MM-DD', 'YYYY-MM-DD[T]HH:mm:ss[Z]', 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]', ...format]
+  }
+
   const expectedValue = helpers.getNestedValue(options.otherField, field)
   const expectedDateTime = dayjs(expectedValue, format, true)
 
