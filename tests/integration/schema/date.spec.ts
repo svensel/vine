@@ -199,4 +199,28 @@ test.group('VineDate', () => {
     assert.equal(result.created_at.getMonth(), '3')
     assert.equal(result.created_at.getFullYear(), '2018')
   })
+
+  test('ISO 8601 respects afterField validation', async ({ assert }) => {
+    const schema = vine.object({
+      start_date: vine.date({ formats: ['iso8601'] }),
+      end_date: vine.date({ formats: ['iso8601'] }).afterField('start_date'),
+    })
+
+    //Same datetimes should throw validation error
+    const data = { start_date: '2018-04-04T16:00:00.000Z', end_date: '2018-04-04T16:00:00.000Z' }
+
+    await assert.rejects(() => vine.validate({ schema, data }))
+  })
+
+  test('ISO 8601 respects beforeField validation', async ({ assert }) => {
+    const schema = vine.object({
+      start_date: vine.date({ formats: ['iso8601'] }).beforeField('end_date'),
+      end_date: vine.date({ formats: ['iso8601'] }),
+    })
+
+    //Same datetimes should throw validation error
+    const data = { start_date: '2018-04-04T16:00:00.000Z', end_date: '2018-04-04T16:00:00.000Z' }
+
+    await assert.rejects(() => vine.validate({ schema, data }))
+  })
 })
